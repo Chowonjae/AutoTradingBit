@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 import pyupbit as pu
 
 def api_key():

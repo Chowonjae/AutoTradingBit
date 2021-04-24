@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 # 변동성 돌파전략 백테스팅
 import pyupbit as pu
 

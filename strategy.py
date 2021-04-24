@@ -1,5 +1,8 @@
+# -*- encoding: utf-8 -*-
+
 import time
 import pyupbit as pu
+import bot.slackBot as bot
 
 # 잔고조회
 def balance_now():
@@ -19,6 +22,7 @@ def balance_now():
 # while True:
 #     price = pu.get_current_price("KRW-BTC")
 #     print(price)
+#     bot.post_message(price)
 #     time.sleep(0.2)
 
 # 변동성 돌파 전략 목표가 갱신
@@ -31,4 +35,3 @@ def get_target_price(ticker):
     yesterday_low = yesterday['low']
     target = today_open + (yesterday_high - yesterday_low) * 0.5
     return target
-

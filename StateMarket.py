@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 # 이동평균선으로 현재의 장 흐름세를 파악 (상승장, 하락장)
 import pyupbit as pu
 
@@ -15,13 +17,13 @@ def StateMarket(ticker):
     else:
         return False
 
-tickers = ['KRW-BTC', 'KRW-ETH', 'KRW-XRP', 'KRW-ADA', 'KRW-ZIL']
-for ticker in tickers:
-    is_bull = StateMarket(ticker)
-    if is_bull:
-        print(ticker, "상승장")
-    else:
-        print(ticker, "하락장")
+# tickers = ['KRW-BTC', 'KRW-ETH', 'KRW-XRP', 'KRW-ADA', 'KRW-ZIL']
+# for ticker in tickers:
+#     is_bull = StateMarket(ticker)
+#     if is_bull:
+#         print(ticker, "상승장")
+#     else:
+#         print(ticker, "하락장")
 
 # def buy_currency(ticker):
 #     krw = upbit.get_balance("KRW")
