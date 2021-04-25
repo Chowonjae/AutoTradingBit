@@ -2,7 +2,7 @@
 
 import time
 import pyupbit as pu
-import bot.slackBot as bot
+from bot import slackBot as bot
 
 # 잔고조회
 def balance_now():

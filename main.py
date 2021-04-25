@@ -3,11 +3,11 @@
 import time
 import datetime
 import pyupbit as pu
-import strategy as st
-import strategy.StateMarket as state
-import trade.Trading as trading
-import api.API_KEY as key
-import bot.slackBot as bot
+from strategy import strategy as st
+from strategy import StateMarket as state
+from trade import Trading as trading
+from api import API_KEY as key
+from bot import slackBot as bot
 
 
 if __name__ == '__main__':
@@ -20,9 +20,9 @@ if __name__ == '__main__':
         holding_cash = upbit.get_balance("KRW") # 보유한 현금
         bring_balances = upbit.get_balances()   # 보유한 암호화폐 조회
         buy_amount = holding_cash * buy_percent # 화폐당 주문 가능 금액
-        holding_cash_message = '주문 가능 금액 ' + str(holding_cash) + '원 \n'
+        holding_cash_message = '주문 가능 금액 ' + str(int(holding_cash)) + '원 \n'
         buy_percent_message = '암호화폐별 주문 비율 : ' + str(buy_percent) + '\n'
-        buy_amount_message = '암호화폐별 주문 금액 : ' + str(buy_amount) + '\n'
+        buy_amount_message = '암호화폐별 주문 금액 : ' + str(int(buy_amount)) + '\n'
         start_time_message = '시작 시간 :: ' + str(datetime.datetime.now().strftime('%m/%d %H:%M:%S')) + '\n'
         start_message = holding_cash_message + buy_percent_message + buy_amount_message + start_time_message
         bot.start_bot(start_message)

@@ -2,7 +2,7 @@
 
 import requests
 from datetime import datetime
-import API_KEY as key
+from api import API_KEY as key
 
 upbit = key.api_key()
 

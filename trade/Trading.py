@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-import api.API_KEY as key
+from api import API_KEY as key
 import pyupbit as pu
-import bot.slackBot as bot
+from bot import slackBot as bot
 
 upbit = key.api_key()
 
