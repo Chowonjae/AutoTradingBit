@@ -1,13 +1,12 @@
 # -*- encoding: utf-8 -*-
 
-import os, sys, ctypes
-import time, calendar
+import time
 import datetime
 import pyupbit as pu
 import strategy as st
-import StateMarket as state
-import Trading as trading
-import API_KEY as key
+import strategy.StateMarket as state
+import trade.Trading as trading
+import api.API_KEY as key
 import bot.slackBot as bot
 
 
@@ -45,9 +44,11 @@ if __name__ == '__main__':
             for coin in coin_list:
                 if open < now < open + datetime.timedelta(seconds=10):
                     target_price = st.get_target_price(coin)  # 목표가 갱신
+                    message = coin + ":" + str(target_price)
+                    bot.slack_message("거래 시작 목표가 갱신", message)
                 current_price = pu.get_current_price(coin)  # 현재가
 
-            for coin in coin_list:
+
                 isBull = state.StateMarket(coin)
                 if current_price > target_price and isBull:  # 현재가가 목표가이상으로 가면 매수
                     trading.buy_crypto_currency(coin, buy_amount)
@@ -55,20 +56,21 @@ if __name__ == '__main__':
                     if not upbit.get_order(coin):
                         bot.buy_bot(coin)
 
-            # 주문 취소
-            if open + datetime.timedelta(minutes=20) < now:  # 10분이 지난 후 미체결 주문 취소
-                trading.order_state(coin)
+                # 주문 취소
+                if open + datetime.timedelta(minutes=20) < now:  # 10분이 지난 후 미체결 주문 취소
+                    trading.order_state(coin)
+                    time.sleep(1)
+
+                # if trading.stop_loss(coin) is True:
+                #     trading.sell_crypto_currency(coin)
+                #     bot.stop_loss_bot(coin)
+                #     time.sleep(1)
+
+                if open - datetime.timedelta(seconds=10) < now < open - datetime.timedelta(seconds=1):  # 9시에 전량 매도
+                    if upbit.get_balance(coin):
+                        trading.sell_crypto_currency(coin)
+                        bot.sell_bot(coin)
+
                 time.sleep(1)
-
-            # if trading.stop_loss(coin) is True:
-            #     trading.sell_crypto_currency(coin)
-            #     bot.stop_loss_bot(coin)
-            #     time.sleep(1)
-
-            if open - datetime.timedelta(seconds=10) < now < open - datetime.timedelta(seconds=1):  # 9시에 전량 매도
-                trading.sell_crypto_currency(coin)
-                bot.sell_bot(coin)
-
-            time.sleep(1)
     except Exception as e:
         bot.error_bot(e)
