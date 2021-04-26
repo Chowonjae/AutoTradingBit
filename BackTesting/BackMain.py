@@ -23,9 +23,11 @@ def get_ror(coin, k):
     df['bull'] = df['open'] > df['ma5']
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
-    df['current_price'] <= df['target'] + df['target'] * 0.
+
     krw = 1000000
-    if df['high'] > df['target']:
+    df['ror'] = np.where(df['high'] > df['target'],
+                         df['close'] / df['target'],
+                         1)
 
 
     df['total'] = df['ror'].cumprod()
@@ -45,9 +47,9 @@ def get_ror(coin, k):
 
 # 상승장일 경우 0.7 아닐경우 0.5
 
-print(get_ror("KRW-BTC", 0.5))
+# print(get_ror("KRW-BTC", 0.5))
 # for k in np.arange(0.1, 1.0, 0.1):
-#     ror = get_ror(k)
+#     ror = get_ror("KRW-ada", k)
 #     print("%.1f %f" % (k, ror))
 
 # def get_ror(k):
