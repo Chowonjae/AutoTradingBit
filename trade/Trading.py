@@ -1,11 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 from api import API_KEY as key
-import pyupbit as pu
 from bot import slackBot as bot
+import datetime
+import pyupbit as pu
 
 upbit = key.api_key()
-
+now = str(datetime.datetime.now())
+new_now = now[0:10]
 
 # 매수
 def buy_crypto_currency(ticker, unit):
@@ -13,7 +15,9 @@ def buy_crypto_currency(ticker, unit):
     sell_price = orderbook[0]['orderbook_units'][0]['bid_price']
     a = (unit / sell_price) - 0.00000001
     volume = '%.8f' % a
-    upbit.buy_limit_order(ticker, sell_price, volume)
+    buy = upbit.buy_limit_order(ticker, sell_price, volume)
+    # print('매수 ', ticker)
+    return buy
 
 
 # 매도
@@ -39,6 +43,19 @@ def order_state(coin):
             bought_crypto_cancel(orderId)  # 미체결 주문 취소
             bot.cancel_bot(coin)
 
+# 주문 이력 비교
+def order_history1(coin):
+    if len(upbit.get_order(coin, state='done')) > 0:
+        state_done = upbit.get_order(coin, state='done')
+        for i in range(1):
+            order_date = state_done[i]['created_at'][0:10]
+        if order_date == new_now:
+            return True  # 거래한 내역이 있다
+def order_history2(coin):
+    if len(upbit.get_order(coin)) > 0:
+        his_coin = upbit.get_order(coin)[0]['market']
+        if his_coin == coin:
+            return True
 
 # stop-loss
 # def stop_loss(coin):

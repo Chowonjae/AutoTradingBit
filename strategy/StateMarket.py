@@ -17,3 +17,8 @@ def StateMarket(ticker):
         return True
     else:
         return False
+
+# coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-LTC", "KRW-XEM", "KRW-ZIL", "KRW-SC"]
+#
+# for i in coin_list:
+#     print(i, StateMarket(i))

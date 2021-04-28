@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-
+import sys
 import time
 import datetime
 import pyupbit as pu
@@ -20,8 +20,8 @@ if __name__ == '__main__':
         bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
         buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
         holding_cash_message = '주문 가능 금액 ' + str(int(holding_cash)) + '원 \n'
-        buy_percent_message = '암호화폐별 주문 비율 : ' + str(buy_percent) + '\n'
-        buy_amount_message = '암호화폐별 주문 금액 : ' + str(int(buy_amount)) + '\n'
+        buy_percent_message = '암호화폐별 주문 비율 : ' + str(buy_percent) + '배 \n'
+        buy_amount_message = '암호화폐별 주문 금액 : ' + str(int(buy_amount)) + '원 \n'
         start_time_message = '시작 시간 :: ' + str(datetime.datetime.now().strftime('%m/%d %H:%M:%S')) + '\n'
         start_message = '------------------------ \n' + \
                         holding_cash_message + \
@@ -41,13 +41,16 @@ if __name__ == '__main__':
             target_price[coin] = st.get_target_price(coin)  # 거래 시작 목표가
         message = str(target_price)
         bot.slack_message("거래 시작 목표가", message)
-        # print(message)
+        # print("거래 시작 목표가 ", message)
 
         while True:
             now = datetime.datetime.now()
             open = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
             if open < now < open + datetime.timedelta(seconds=10):
+                holding_cash = upbit.get_balance("KRW")  # 보유한 현금
+                bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
+                buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 message = str(target_price)
@@ -56,15 +59,15 @@ if __name__ == '__main__':
             for coin in coin_list:
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
-                # print(coin, current_price[coin])
-                # print(coin, isBull[coin])
+                # print(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    # trading.buy_crypto_currency(coin, buy_amount, k=0.5)
                     trading.buy_crypto_currency(coin, buy_amount)
-                if not upbit.get_order(coin):
+                if trading.order_history1(coin) or trading.order_history2(coin):
+                    pass
+                else:
                     bot.buy_bot(coin)
-            # print(current_price)
-            # print(isBull)
+                time.sleep(0.2)
+
 
             if open - datetime.timedelta(seconds=10) < now < open - datetime.timedelta(seconds=1):  # 9시에 전량 매도
                 for coin in coin_list:
@@ -72,10 +75,11 @@ if __name__ == '__main__':
                         trading.sell_crypto_currency(coin)
                         bot.sell_bot(coin)
 
+
             # 주문 취소
-            if open + datetime.timedelta(minutes=20) < now:  # 10분이 지난 후 미체결 주문 취소
-                for coin in coin_list:
-                    trading.order_state(coin)
+            # if open + datetime.timedelta(minutes=20) < now:  # 10분이 지난 후 미체결 주문 취소
+            #     for coin in coin_list:
+            #         trading.order_state(coin)
 
             # if trading.stop_loss(coin) is True:
             #     trading.sell_crypto_currency(coin)
@@ -83,5 +87,9 @@ if __name__ == '__main__':
             #     time.sleep(1)
 
             time.sleep(1)
+
     except Exception as e:
-        bot.error_bot(e)
+        if sys.exit(0) or sys.exit(1):
+            bot.exit_bot('프로그램을 종료합니다.')
+        else:
+            bot.error_bot(e)

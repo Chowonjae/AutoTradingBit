@@ -37,3 +37,6 @@ def error_bot(e):
 
 def start_bot(message):
     post_message(message)
+
+def exit_bot(message):
+    post_message(message)
