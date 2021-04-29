@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-import sys
+
 import time
 import datetime
 import pyupbit as pu
@@ -45,36 +45,34 @@ if __name__ == '__main__':
 
         while True:
             now = datetime.datetime.now()
-            open = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
+            open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
-            if open < now < open + datetime.timedelta(seconds=10):
-                holding_cash = upbit.get_balance("KRW")  # 보유한 현금
-                bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
-                buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
+            # 장 시작시간 이후 설정 값 초기화
+            if open_time < now < open_time + datetime.timedelta(seconds=10):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 message = str(target_price)
                 bot.slack_message("거래 시작 목표가 갱신", message)
-
+                holding_cash = upbit.get_balance("KRW")  # 보유한 현금
+                bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
+                buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
+            
+            # 지정가 이후 매수
             for coin in coin_list:
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
-                # print(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    trading.buy_crypto_currency(coin, buy_amount)
-                if trading.order_history1(coin) or trading.order_history2(coin):
-                    pass
-                else:
-                    bot.buy_bot(coin)
+                    if not trading.order_history1(coin):
+                        trading.buy_crypto_currency(coin, buy_amount)
+                        bot.buy_bot(coin)
+
                 time.sleep(0.2)
-
-
-            if open - datetime.timedelta(seconds=10) < now < open - datetime.timedelta(seconds=1):  # 9시에 전량 매도
+            # 9시에 전량 매도
+            if open_time - datetime.timedelta(seconds=11) < now < open_time - datetime.timedelta(seconds=1):
                 for coin in coin_list:
                     if upbit.get_balance(coin):
                         trading.sell_crypto_currency(coin)
                         bot.sell_bot(coin)
-
 
             # 주문 취소
             # if open + datetime.timedelta(minutes=20) < now:  # 10분이 지난 후 미체결 주문 취소
@@ -89,7 +87,4 @@ if __name__ == '__main__':
             time.sleep(1)
 
     except Exception as e:
-        if sys.exit(0) or sys.exit(1):
-            bot.exit_bot('프로그램을 종료합니다.')
-        else:
-            bot.error_bot(e)
+        bot.error_bot(e)

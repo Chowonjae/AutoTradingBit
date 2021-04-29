@@ -29,3 +29,7 @@ isBull = {}
 # now = datetime.datetime.now()
 # print(upbit.get_order("KRW-BTC", state='done')[0]['created_at'])
 
+# def order_history1(coin):
+#     return True
+#
+# print(order_history1("KRW-BTC"))

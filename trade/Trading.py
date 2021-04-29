@@ -9,6 +9,7 @@ upbit = key.api_key()
 now = str(datetime.datetime.now())
 new_now = now[0:10]
 
+
 # 매수
 def buy_crypto_currency(ticker, unit):
     orderbook = pu.get_orderbook(ticker)
@@ -16,7 +17,6 @@ def buy_crypto_currency(ticker, unit):
     a = (unit / sell_price) - 0.00000001
     volume = '%.8f' % a
     buy = upbit.buy_limit_order(ticker, sell_price, volume)
-    # print('매수 ', ticker)
     return buy
 
 
@@ -43,19 +43,31 @@ def order_state(coin):
             bought_crypto_cancel(orderId)  # 미체결 주문 취소
             bot.cancel_bot(coin)
 
-# 주문 이력 비교
+
+# 주문 이력 비교 (거래 완료)
 def order_history1(coin):
+    global order_date
     if len(upbit.get_order(coin, state='done')) > 0:
         state_done = upbit.get_order(coin, state='done')
-        for i in range(1):
-            order_date = state_done[i]['created_at'][0:10]
+        if state_done[1]['side'] == 'bid':  # 매수
+            order_date = state_done[1]['created_at'][0:10]
+        else:  # 매도
+            pass
         if order_date == new_now:
             return True  # 거래한 내역이 있다
+        else:
+            return False
+
+
+# 주문 이력 비교 (미체결 주문)
 def order_history2(coin):
     if len(upbit.get_order(coin)) > 0:
         his_coin = upbit.get_order(coin)[0]['market']
         if his_coin == coin:
             return True
+        else:
+            return False
+
 
 # stop-loss
 # def stop_loss(coin):
@@ -66,3 +78,5 @@ def order_history2(coin):
 #             if state_done[i]['ord_type'] in "limit":
 #                 current_price < float(state_done[i]['price'] * 0.1)
 #                 return True
+
+# print(order_history1("KRW-"))
