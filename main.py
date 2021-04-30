@@ -48,7 +48,7 @@ if __name__ == '__main__':
             open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
             # 장 시작시간 이후 설정 값 초기화
-            if open_time < now < open_time + datetime.timedelta(seconds=10):
+            if open_time < now < open_time + datetime.timedelta(seconds=5):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 message = str(target_price)
@@ -62,7 +62,9 @@ if __name__ == '__main__':
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    if not trading.order_history1(coin):
+                    if trading.order_history1(coin):
+                        pass
+                    else:
                         trading.buy_crypto_currency(coin, buy_amount)
                         bot.buy_bot(coin)
 
@@ -83,7 +85,7 @@ if __name__ == '__main__':
             #     trading.sell_crypto_currency(coin)
             #     bot.stop_loss_bot(coin)
             #     time.sleep(1)
-
+            print("~ing...")
             time.sleep(1)
 
     except Exception as e:

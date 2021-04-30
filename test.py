@@ -13,23 +13,22 @@ target_price = {}
 current_price = {}
 isBull = {}
 
+# for coin in coin_list:
+#     target_price[coin] = st.get_target_price(coin)
 # while True:
 #     for coin in coin_list:
-#         target_price[coin] = st.get_target_price(coin)
-#     message = str(target_price)
-#     print("거래 시작 목표가 : ", message)
-#
-#     for coin in coin_list:
-#         current_price[coin] = pu.get_current_price(coin)
+#         current_price[coin] = pu.get_current_price(coin)  # 현재가
 #         isBull[coin] = state.StateMarket(coin)
-#     print("현재가 : ", current_price)
-#     print(isBull["KRW-BTC"])
-#
-#     time.sleep(1)
-# now = datetime.datetime.now()
-# print(upbit.get_order("KRW-BTC", state='done')[0]['created_at'])
+#         if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
+#             if False:
+#                 print(coin)
+#             else:
+#                 print("a")
+
 
 # def order_history1(coin):
 #     return True
 #
 # print(order_history1("KRW-BTC"))
+
+# print(upbit.get_balances())

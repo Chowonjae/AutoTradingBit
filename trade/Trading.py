@@ -6,8 +6,7 @@ import datetime
 import pyupbit as pu
 
 upbit = key.api_key()
-now = str(datetime.datetime.now())
-new_now = now[0:10]
+
 
 
 # 매수
@@ -46,17 +45,19 @@ def order_state(coin):
 
 # 주문 이력 비교 (거래 완료)
 def order_history1(coin):
+    now = str(datetime.datetime.now())
+    new_now = now[0:10]
     global order_date
     if len(upbit.get_order(coin, state='done')) > 0:
         state_done = upbit.get_order(coin, state='done')
-        if state_done[1]['side'] == 'bid':  # 매수
+        if state_done[0]['side'] == 'bid':  # 매수
             order_date = state_done[1]['created_at'][0:10]
-        else:  # 매도
+            if order_date == new_now:
+                return True  # 거래한 내역이 있다
+            else:
+                pass
+        elif state_done[0]['side'] == 'ask':  # 매도
             pass
-        if order_date == new_now:
-            return True  # 거래한 내역이 있다
-        else:
-            return False
 
 
 # 주문 이력 비교 (미체결 주문)
@@ -79,4 +80,4 @@ def order_history2(coin):
 #                 current_price < float(state_done[i]['price'] * 0.1)
 #                 return True
 
-# print(order_history1("KRW-"))
+# print(order_history1("KRW-ADA"))
