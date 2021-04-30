@@ -51,11 +51,12 @@ if __name__ == '__main__':
             if open_time < now < open_time + datetime.timedelta(seconds=5):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
-                message = str(target_price)
-                bot.slack_message("거래 시작 목표가 갱신", message)
                 holding_cash = upbit.get_balance("KRW")  # 보유한 현금
                 bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
                 buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
+                message = str(target_price) + '보유한 현금 = ' + str(int(holding_cash)) + '암호화폐별 주문 금액 = ' + str(
+                    int(buy_amount))
+                bot.slack_message("거래 시작 목표가 갱신", message)
             
             # 지정가 이후 매수
             for coin in coin_list:

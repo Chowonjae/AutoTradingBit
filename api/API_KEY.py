@@ -3,7 +3,7 @@
 import pyupbit as pu
 
 def api_key():
-    with open("../upbit.txt") as f:
+    with open("upbit.txt") as f:
         lines = f.readlines()
         access = lines[0].strip()
         secret = lines[1].strip()
