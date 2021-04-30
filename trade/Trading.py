@@ -51,7 +51,7 @@ def order_history1(coin):
     if len(upbit.get_order(coin, state='done')) > 0:
         state_done = upbit.get_order(coin, state='done')
         if state_done[0]['side'] == 'bid':  # 매수
-            order_date = state_done[1]['created_at'][0:10]
+            order_date = state_done[0]['created_at'][0:10]
             if order_date == new_now:
                 return True  # 거래한 내역이 있다
             else:
