@@ -67,7 +67,7 @@ def order_history2(coin):
         if his_coin == coin:
             return True
         else:
-            return False
+            pass
 
 
 # stop-loss
@@ -80,4 +80,4 @@ def order_history2(coin):
 #                 current_price < float(state_done[i]['price'] * 0.1)
 #                 return True
 
-# print(order_history1("KRW-ADA"))
+# print(upbit.get_order("KRW-BTC"))

@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    if trading.order_history1(coin):
+                    if trading.order_history1(coin) and trading.order_history2(coin):
                         pass
                     else:
                         trading.buy_crypto_currency(coin, buy_amount)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
                 time.sleep(0.2)
             # 9시에 전량 매도
-            if open_time - datetime.timedelta(seconds=11) < now < open_time - datetime.timedelta(seconds=1):
+            if open_time - datetime.timedelta(minutes=2) < now < open_time - datetime.timedelta(seconds=1):
                 for coin in coin_list:
                     if upbit.get_balance(coin):
                         trading.sell_crypto_currency(coin)
@@ -86,7 +86,6 @@ if __name__ == '__main__':
             #     trading.sell_crypto_currency(coin)
             #     bot.stop_loss_bot(coin)
             #     time.sleep(1)
-            print("~ing...")
             time.sleep(1)
 
     except Exception as e:
