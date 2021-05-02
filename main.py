@@ -12,9 +12,9 @@ from bot import slackBot as bot
 if __name__ == '__main__':
     try:
         upbit = key.api_key()
-        coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-LTC", "KRW-XEM", "KRW-ZIL", "KRW-SC"]
+        coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-TRX", "KRW-XEM", "KRW-ZIL", "KRW-SC", "KRW-EOS", "KRW-CHZ"]
         bought_list = []
-        target_buy_count = 8  # 주문예정 암호화폐 개수
+        target_buy_count = 10  # 주문예정 암호화폐 개수
         buy_percent = 0.125  # 화폐별 구매 비율
         holding_cash = upbit.get_balance("KRW")  # 보유한 현금
         bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
                 time.sleep(0.2)
             # 9시에 전량 매도
-            if open_time - datetime.timedelta(minutes=2) < now < open_time - datetime.timedelta(seconds=1):
+            if open_time - datetime.timedelta(minutes=3) < now < open_time - datetime.timedelta(seconds=1):
                 for coin in coin_list:
                     if upbit.get_balance(coin):
                         trading.sell_crypto_currency(coin)

@@ -32,3 +32,7 @@ isBull = {}
 # print(order_history1("KRW-BTC"))
 
 # print(upbit.get_balances())
+
+# now = datetime.datetime.now()
+# open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
+# print(open_time - datetime.timedelta(minutes=2))
