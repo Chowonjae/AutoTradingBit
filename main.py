@@ -12,7 +12,8 @@ from bot import slackBot as bot
 if __name__ == '__main__':
     try:
         upbit = key.api_key()
-        coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-TRX", "KRW-XEM", "KRW-ZIL", "KRW-SC", "KRW-EOS", "KRW-CHZ"]
+        coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-TRX", "KRW-XEM", "KRW-ZIL", "KRW-SC", "KRW-LTC",
+                     "KRW-CHZ"]
         bought_list = []
         target_buy_count = 10  # 주문예정 암호화폐 개수
         buy_percent = 0.125  # 화폐별 구매 비율
@@ -48,16 +49,20 @@ if __name__ == '__main__':
             open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
             # 장 시작시간 이후 설정 값 초기화
-            if open_time < now < open_time + datetime.timedelta(seconds=5):
+            if open_time + datetime.timedelta(seconds=1) < now < open_time + datetime.timedelta(seconds=5):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 holding_cash = upbit.get_balance("KRW")  # 보유한 현금
                 bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
                 buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
-                message = str(target_price) + '보유한 현금 = ' + str(int(holding_cash)) + '암호화폐별 주문 금액 = ' + str(
-                    int(buy_amount))
+                message1 = str(target_price)
                 bot.slack_message("거래 시작 목표가 갱신", message)
-            
+                message2 = '---------------------' + \
+                           '보유한 현금 = ' + str(int(holding_cash)) + \
+                           '암호화폐별 주문 금액 = ' + str(int(buy_amount)) + \
+                           '---------------------'
+                bot.start_bot(message2)
+
             # 지정가 이후 매수
             for coin in coin_list:
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
