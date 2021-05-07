@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    if trading.order_history1(coin) and trading.order_history2(coin):
+                    if not trading.order_history1(coin) and not trading.order_history2(coin):
                         pass
                     else:
                         trading.buy_crypto_currency(coin, buy_amount)
