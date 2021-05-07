@@ -72,7 +72,7 @@ if __name__ == '__main__':
                         pass
                     else:
                         trading.buy_crypto_currency(coin, buy_amount)
-                        bot.buy_bot(coin)
+                        # bot.buy_bot(coin)
 
                 time.sleep(0.2)
             # 9시에 전량 매도
