@@ -8,22 +8,12 @@ from api import API_KEY as key
 from bot import slackBot as bot
 
 upbit = key.api_key()
-coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-LTC", "KRW-xEM", "KRW-ZIL", "KRW-SC"]
+coin_list = ["KRW-TRX"]
 target_price = {}
 current_price = {}
 isBull = {}
 
-# for coin in coin_list:
-#     target_price[coin] = st.get_target_price(coin)
-# while True:
-#     for coin in coin_list:
-#         current_price[coin] = pu.get_current_price(coin)  # 현재가
-#         isBull[coin] = state.StateMarket(coin)
-#         if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-#             if False:
-#                 print(coin)
-#             else:
-#                 print("a")
+# for coin in coin_list:vi
 
 
 # def order_history1(coin):

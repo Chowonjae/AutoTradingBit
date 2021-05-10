@@ -16,12 +16,9 @@ def slack_message(title, message):
     strbuf = datetime.now().strftime('[%m/%d %H:%M:%S] ') + str(title) + " -> " + str(message)
     post_message(strbuf)
 
-def buy_bot(coin):
-    for i in range(len(upbit.get_balances())):
-        bal = upbit.get_balances()[i]
-        if bal['currency'] == coin[4:8]:
-            message = coin + "을 " + bal['avg_buy_price'] + "가격으로" + bal['balance'] + "개 구매했습니다."
-            slack_message("구매", message)
+def buy_bot(information):
+    message = information['market'][4:8] + "을 " + information['price'] + "가격으로" + information['volume'] + "개 매수했습니다."
+    slack_message("구매", message)
 
 def sell_bot(coin):
     slack_message('매도 완료', coin)

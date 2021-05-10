@@ -57,10 +57,10 @@ if __name__ == '__main__':
                 buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
                 message1 = str(target_price)
                 bot.slack_message("거래 시작 목표가 갱신", message)
-                message2 = '---------------------' + \
-                           '보유한 현금 = ' + str(int(holding_cash)) + \
-                           '암호화폐별 주문 금액 = ' + str(int(buy_amount)) + \
-                           '---------------------'
+                message2 = '--------------------- \n' + \
+                           '보유한 현금 = ' + str(int(holding_cash)) + '원 \n' + \
+                           '암호화폐별 주문 금액 = ' + str(int(buy_amount)) + '원 \n' + \
+                           '--------------------- \n'
                 bot.start_bot(message2)
 
             # 지정가 이후 매수
@@ -68,15 +68,14 @@ if __name__ == '__main__':
                 current_price[coin] = pu.get_current_price(coin)  # 현재가
                 isBull[coin] = state.StateMarket(coin)
                 if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    if not trading.order_history1(coin) and not trading.order_history2(coin):
+                    if trading.order_history1(coin) or trading.order_history2(coin):
                         pass
                     else:
                         trading.buy_crypto_currency(coin, buy_amount)
-                        # bot.buy_bot(coin)
 
                 time.sleep(0.2)
             # 9시에 전량 매도
-            if open_time - datetime.timedelta(minutes=3) < now < open_time - datetime.timedelta(seconds=1):
+            if open_time - datetime.timedelta(seconds=30) < now < open_time - datetime.timedelta(seconds=1):
                 for coin in coin_list:
                     if upbit.get_balance(coin):
                         trading.sell_crypto_currency(coin)

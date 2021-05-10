@@ -8,7 +8,6 @@ import pyupbit as pu
 upbit = key.api_key()
 
 
-
 # 매수
 def buy_crypto_currency(ticker, unit):
     orderbook = pu.get_orderbook(ticker)
@@ -16,15 +15,15 @@ def buy_crypto_currency(ticker, unit):
     a = (unit / sell_price) - 0.00000001
     volume = '%.8f' % a
     buy = upbit.buy_limit_order(ticker, sell_price, volume)
-    return buy
+    bot.buy_bot(buy)
 
 
 # 매도
 def sell_crypto_currency(ticker):
     coin = upbit.get_balance(ticker)
-    orderbook = pu.get_orderbook(ticker)
-    buy_price = orderbook[0]['orderbook_units'][0]['ask_price']
-    upbit.sell_limit_order(ticker, buy_price, coin)
+    # orderbook = pu.get_orderbook(ticker)
+    # buy_price = orderbook[0]['orderbook_units'][0]['ask_price']
+    upbit.sell_market_order(ticker, coin)
 
 
 # 취소
@@ -69,7 +68,6 @@ def order_history2(coin):
         else:
             pass
 
-
 # stop-loss
 # def stop_loss(coin):
 #     state_done = upbit.get_order(coin, state="done")
@@ -80,4 +78,4 @@ def order_history2(coin):
 #                 current_price < float(state_done[i]['price'] * 0.1)
 #                 return True
 
-# print(upbit.get_order("KRW-BTC"))
+# print(order_history1("KRW-TRX"))
