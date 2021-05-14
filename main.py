@@ -49,7 +49,7 @@ if __name__ == '__main__':
             open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
             # 장 시작시간 이후 설정 값 초기화
-            if open_time + datetime.timedelta(seconds=1) < now < open_time + datetime.timedelta(seconds=5):
+            if open_time + datetime.timedelta(minutes=1) < now < open_time + datetime.timedelta(minutes=1, seconds=5):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 holding_cash = upbit.get_balance("KRW")  # 보유한 현금

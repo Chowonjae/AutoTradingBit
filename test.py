@@ -8,7 +8,7 @@ from api import API_KEY as key
 from bot import slackBot as bot
 
 upbit = key.api_key()
-coin_list = ["KRW-TRX"]
+coin_list = ["KRW-EOS"]
 target_price = {}
 current_price = {}
 isBull = {}
@@ -22,7 +22,11 @@ isBull = {}
 # print(order_history1("KRW-BTC"))
 
 # print(upbit.get_balances())
+# for i in range(len(upbit.get_balances())):
+#     if upbit.get_balances()[i]['currency']==coin_list[0][4:]:
+#         print(upbit.get_balances()[i]['currency'])
+# print(coin_list[0][4:])
 
 # now = datetime.datetime.now()
 # open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
-# print(open_time - datetime.timedelta(minutes=2))
+# print(open_time + datetime.timedelta(minutes=1, seconds=5))
