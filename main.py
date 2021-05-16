@@ -49,7 +49,7 @@ if __name__ == '__main__':
             open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 
             # 장 시작시간 이후 설정 값 초기화
-            if open_time + datetime.timedelta(minutes=1) < now < open_time + datetime.timedelta(minutes=1, seconds=5):
+            if open_time + datetime.timedelta(minutes=5) < now < open_time + datetime.timedelta(minutes=5, seconds=5):
                 for coin in coin_list:
                     target_price[coin] = st.get_target_price(coin)  # 목표가 갱신
                 holding_cash = upbit.get_balance("KRW")  # 보유한 현금
@@ -63,19 +63,20 @@ if __name__ == '__main__':
                            '--------------------- \n'
                 bot.start_bot(message2)
 
-            # 지정가 이후 매수
-            for coin in coin_list:
-                current_price[coin] = pu.get_current_price(coin)  # 현재가
-                isBull[coin] = state.StateMarket(coin)
-                if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
-                    if trading.order_history1(coin) or trading.order_history2(coin):
-                        pass
-                    else:
-                        trading.buy_crypto_currency(coin, buy_amount)
+            if open_time + datetime.timedelta(minutes=5, seconds=6) < now or now < open_time - datetime.timedelta(seconds=11):
+                # 지정가 이후 매수
+                for coin in coin_list:
+                    current_price[coin] = pu.get_current_price(coin)  # 현재가
+                    isBull[coin] = state.StateMarket(coin)
+                    if current_price[coin] > target_price[coin] and isBull[coin]:  # 현재가가 목표가이상으로 가면 매수 상승장
+                        if trading.order_history1(coin) or trading.order_history2(coin):
+                            pass
+                        else:
+                            trading.buy_crypto_currency(coin, buy_amount)
 
-                time.sleep(0.2)
+                    time.sleep(0.2)
             # 9시에 전량 매도
-            if open_time - datetime.timedelta(seconds=30) < now < open_time - datetime.timedelta(seconds=1):
+            if open_time - datetime.timedelta(seconds=10) < now < open_time - datetime.timedelta(seconds=1):
                 for coin in coin_list:
                     if upbit.get_balance(coin):
                         trading.sell_crypto_currency(coin)
