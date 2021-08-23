@@ -7,8 +7,10 @@ import pyupbit as pu
 
 
 def StateMarket(ticker):
-    ct = pu.get_ohlcv(ticker, interval="day", count=5)
-    ma5 = ct['close'].rolling(5).mean().iloc[-1]
+    ct5 = pu.get_ohlcv(ticker, interval="day", count=5)
+    ct20 = pu.get_ohlcv(ticker, interval="day", count=20)
+    ma5 = ct5['close'].rolling(5).mean().iloc[-1]
+    ma20 = ct20['close'].rolling(20).mean().iloc[-1]
 
     price = pu.get_current_price(ticker)
     time.sleep(0.1)

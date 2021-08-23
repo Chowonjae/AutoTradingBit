@@ -31,3 +31,4 @@ isBull = {}
 # open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
 # print(open_time + datetime.timedelta(minutes=5, seconds=5))
 # print(open_time - datetime.timedelta(seconds=11))
+print(st.get_target_price("KRW-XRP"))

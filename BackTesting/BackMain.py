@@ -10,6 +10,11 @@ def get_ror(coin, k):
     date = None
     dfs = []
     # 1000일간 데이터 수집
+    # df = pu.get_ohlcv(coin, to=date)
+    # dfs.append(df)
+    #
+    # date = df.index[0]
+    # time.sleep(0.1)
     for i in range(5):
         df = pu.get_ohlcv(coin, to=date)
         dfs.append(df)
@@ -24,9 +29,15 @@ def get_ror(coin, k):
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
+    ct5 = pu.get_ohlcv(coin, interval="day", count=5)
+    ct20 = pu.get_ohlcv(coin, interval="day", count=20)
+    ma5 = ct5['close'].rolling(5).mean().iloc[-1]
+    ma20 = ct20['close'].rolling(20).mean().iloc[-1]
+
     krw = 1000000
-    df['ror'] = np.where(df['high'] > df['target'],
-                         df['close'] / df['target'],
+    fee = 0.001
+    df['ror'] = np.where((df['high'] > df['target']) & (df['open'] > ma20),
+                         df['close'] / df['target'] - fee,
                          1)
 
 
@@ -40,17 +51,17 @@ def get_ror(coin, k):
 
     plt.plot(df['total'])
     plt.show()
-    # df.to_excel("BackTesting.xlsx")
+    df.to_excel("BackTesting.xlsx")
 
     ror = df['ror'].cumprod()[-2]
     return ror
 
 # 상승장일 경우 0.7 아닐경우 0.5
 
-# print(get_ror("KRW-BTC", 0.5))
-# for k in np.arange(0.1, 1.0, 0.1):
-#     ror = get_ror("KRW-ada", k)
-#     print("%.1f %f" % (k, ror))
+# print(get_ror("KRW-BTC", 0.4))
+for k in np.arange(0.1, 1.0, 0.1):
+    ror = get_ror("KRW-BTC", k)
+    print("%.1f %f" % (k, ror))
 
 # def get_ror(k):
 #     date = None
