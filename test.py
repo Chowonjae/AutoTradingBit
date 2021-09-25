@@ -8,27 +8,50 @@ from api import API_KEY as key
 from bot import slackBot as bot
 
 upbit = key.api_key()
-coin_list = ["KRW-EOS"]
+coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-SNT", "KRW-ZIL", "KRW-LTC", "KRW-EOS"]
 target_price = {}
+target_price_12 = {}
+target_price_15 = {}
+target_price_18 = {}
 current_price = {}
 isBull = {}
 
-# for coin in coin_list:vi
+
+def get_target_price(ticker):
+    df = pu.get_ohlcv(ticker, interval="day", count=2)
+    print(df)
+    target = df.iloc[1]['open'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.5
+    return target
 
 
-# def order_history1(coin):
-#     return True
-#
-# print(order_history1("KRW-BTC"))
+def get_target_price_9(ticker):
+    df = pu.get_daily_ohlcv_from_base(ticker, base=9)
+    print(df)
+    target = df.iloc[-1]['open'] + (df.iloc[-2]['high'] - df.iloc[-2]['low']) * 0.5
+    return target
 
-# print(upbit.get_balances())
-# for i in range(len(upbit.get_balances())):
-#     if upbit.get_balances()[i]['currency']==coin_list[0][4:]:
-#         print(upbit.get_balances()[i]['currency'])
-# print(coin_list[0][4:])
 
-# now = datetime.datetime.now()
-# open_time = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(0.375)
-# print(open_time + datetime.timedelta(minutes=5, seconds=5))
-# print(open_time - datetime.timedelta(seconds=11))
-print(st.get_target_price("KRW-XRP"))
+def get_target_price_15(ticker):
+    df = pu.get_daily_ohlcv_from_base(ticker, base=15)
+
+    target = df.iloc[-1]['open'] + (df.iloc[-2]['high'] - df.iloc[-2]['low']) * 0.5
+    return target
+
+
+def get_target_price_18(ticker):
+    df = pu.get_daily_ohlcv_from_base(ticker, base=18)
+    target = df.iloc[-1]['open'] + (df.iloc[-2]['high'] - df.iloc[-2]['low']) * 0.5
+    return target
+
+
+for ticker in coin_list:
+    target_price[ticker] = get_target_price(ticker)
+    target_price_12[ticker] = get_target_price_9(ticker)
+    # target_price_15[ticker] = get_target_price_15(ticker)
+    # target_price_18[ticker] = get_target_price_18(ticker)
+    time.sleep(1)
+
+print(target_price)
+print(target_price_12)
+# print(target_price_15)
+# print(target_price_18)

@@ -8,13 +8,13 @@ from strategy import StateMarket as state
 from trade import Trading as trading
 from api import API_KEY as key
 from bot import slackBot as bot
-
+# hi
 if __name__ == '__main__':
     try:
         upbit = key.api_key()
         coin_list = ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-ADA", "KRW-SNT", "KRW-ZIL", "KRW-LTC", "KRW-EOS"]
         bought_list = []
-        target_buy_count = 10  # 주문예정 암호화폐 개수
+        target_buy_count = 8  # 주문예정 암호화폐 개수
         buy_percent = 0.125  # 화폐별 구매 비율
         holding_cash = upbit.get_balance("KRW")  # 보유한 현금
         bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
@@ -30,18 +30,19 @@ if __name__ == '__main__':
                         start_time_message + \
                         '------------------------ \n'
         bot.start_bot(start_message)
-        # print(start_message)
 
         target_price = {}
         current_price = {}
         isBull = {}
+        message = ''
 
         now = datetime.datetime.now()
         for coin in coin_list:
             target_price[coin] = st.get_target_price(coin)  # 거래 시작 목표가
-        message = str(target_price)
+
+        for i in target_price:
+            message += i + ' : ' + str(target_price[i]) + '\n'
         bot.slack_message("거래 시작 목표가", message)
-        # print("거래 시작 목표가 ", message)
 
         while True:
             now = datetime.datetime.now()
@@ -54,8 +55,9 @@ if __name__ == '__main__':
                 holding_cash = upbit.get_balance("KRW")  # 보유한 현금
                 bring_balances = upbit.get_balances()  # 보유한 암호화폐 조회
                 buy_amount = holding_cash * buy_percent  # 화폐당 주문 가능 금액
-                message1 = str(target_price)
-                bot.slack_message("거래 시작 목표가 갱신", message1)
+                for i in target_price:
+                    message += i + ' : ' + str(target_price[i]) + '\n'
+                bot.slack_message("거래 시작 목표가", message)
                 message2 = '--------------------- \n' + \
                            '보유한 현금 = ' + str(int(holding_cash)) + '원 \n' + \
                            '암호화폐별 주문 금액 = ' + str(int(buy_amount)) + '원 \n' + \

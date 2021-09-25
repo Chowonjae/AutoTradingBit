@@ -13,7 +13,7 @@ def post_message(text):
     )
 
 def slack_message(title, message):
-    strbuf = datetime.now().strftime('[%m/%d %H:%M:%S] ') + str(title) + " -> " + str(message)
+    strbuf = datetime.now().strftime('[%m/%d %H:%M:%S] ') + str(title) + str(message)
     post_message(strbuf)
 
 def buy_bot(information):
