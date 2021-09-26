@@ -8,7 +8,7 @@ upbit = key.api_key()
 
 def post_message(text):
     response = requests.post("https://slack.com/api/chat.postMessage",
-        headers={"Authorization": "Bearer "+'xoxb-1997720968545-1982048415861-YbTk5uHhbpzrtFEdI1WcTbCa'},
+        headers={"Authorization": "Bearer "+'aa'},
         data={"channel": '#bit', "text": text}
     )
 
