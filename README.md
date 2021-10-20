@@ -11,7 +11,7 @@
     target = df.iloc[1]['open'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target
   ```
-  -이동평균선을 이용한 상승장 파악
+  -이동평균선을 이용한 상승장 파악  
   -5일 평균선이 현재가 보다 눂으며 상승장이라 판단하여 변동성 돌파 전략을 사용하여 거래 반대면 거래 정지
   ```
   def StateMarket(ticker):
@@ -27,6 +27,26 @@
         return False
  ```
  * 손실률을 최소화 하는 방법
+  -시드의 20%씩 분산하여 투자  
+  -수익이 난 금액은 시드에 포함하지 않는다.  
+  ```
+  holding_cash = 0,000,000
+  buy_percent = 0.2
+  buy_amount = holding_cash * buy_percent
+  
+  trading.buy_crypto_currency(coin, buy_amount)
+  ```
+  -노이즈 값을 고정 값으로 두는 것이 아닌 20일 노이즈 비율의 평균을 노이즈 값으로 쓰면서 좀 더 시장의 변화에 대응할 수 있도록 한다.
+  -식 : noise = 1 - abs(open - end) / (high - low)
+  ```
+  def k_range(ticker):
+    df = pu.get_ohlcv(ticker, interval="day", count=21)
+    noise_total = 0
+    for i in range(len(df)-1):
+        noise_total += 1 - abs(df.iloc[i]['open'] - df.iloc[i]['close']) / (df.iloc[i]['high'] - df.iloc[i]['low'])
+    noise = noise_total / 20
+    return truncate(noise, 2)
+  ```
  * How it works
 2. About Slack Bot  
 > 가나다
