@@ -4,8 +4,10 @@
  * Strategy  
  * 손실률을 최소화 하는 방법
  * How it works
-2. About Slack Bot 
-3. Working environment
+2. About Slack Bot  
+ * In main.py
+ * Commander Bot
+4. About Working environment
 
 > 1. About main.py 
  * Strategy
@@ -67,4 +69,5 @@
   from bot import slackBot as bot
 ```
 > 2. About Slack Bot  
-
+ * In main.py
+  -거래를 하면서 
