@@ -2,6 +2,12 @@
 > Table of Contents
 1. About main.py  
  * Strategy  
+ * 손실률을 최소화 하는 방법
+ * How it works
+2. About Slack Bot 
+
+> 1. About main.py 
+ * Strategy
  -레리 윌리엄스의 변동성 돌파 전략을 사용 (전일의 변동폭을 사용하여 오늘의 거래신호를 계산함)  
  -전날, 당일의 거래 데이터를 가져와 (전날 고점 - 전날 저점) * k(노이즈 비율)와 당일 시가에 더한 값을 거래 신호로 받아서 거래를 한다.
   ```
@@ -26,7 +32,7 @@
     else:
         return False
  ```
- * 손실률을 최소화 하는 방법
+ * 손실률을 최소화 하는 방법  
   -시드의 20%씩 분산하여 투자  
   -수익이 난 금액은 시드에 포함하지 않는다.  
   ```
@@ -36,7 +42,7 @@
   
   trading.buy_crypto_currency(coin, buy_amount)
   ```
-  -노이즈 값을 고정 값으로 두는 것이 아닌 20일 노이즈 비율의 평균을 노이즈 값으로 쓰면서 좀 더 시장의 변화에 대응할 수 있도록 한다.
+  -노이즈 값을 고정 값으로 두는 것이 아닌 20일 노이즈 비율의 평균을 노이즈 값으로 쓰면서 좀 더 시장의 변화에 대응할 수 있도록 한다.  
   -식 : noise = 1 - abs(open - end) / (high - low)
   ```
   def k_range(ticker):
@@ -48,7 +54,8 @@
     return truncate(noise, 2)
   ```
  * How it works
-2. About Slack Bot  
+  -main.py
+> 2. About Slack Bot  
 > 가나다
 * 리스트1
 * 리스트2
