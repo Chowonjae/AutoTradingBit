@@ -7,7 +7,9 @@
 2. About Slack Bot  
  * In main.py
  * Commander Bot
-4. About Working environment
+3. About Working environment
+ * AWS
+ * Docker
 
 > 1. About main.py 
  * Strategy
@@ -128,3 +130,6 @@ def stop():
     os.system('kill -9 ' + pid)
     return pid + ' 정지 완료'
 ```
+> 3. About Working environment
+  * AWS
+   -
