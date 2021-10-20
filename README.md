@@ -5,6 +5,7 @@
  * 손실률을 최소화 하는 방법
  * How it works
 2. About Slack Bot 
+3. Working environment
 
 > 1. About main.py 
  * Strategy
@@ -53,13 +54,17 @@
     noise = noise_total / 20
     return truncate(noise, 2)
   ```
- * How it works
-  -main.py
+* How it works
+  -main.py에 각각의 모듈들을 import 하고 모든 동작은 main.py에서 시작 되게 했다.
+  ```
+  import time
+  import datetime
+  import pyupbit as pu
+  from strategy import strategy as st
+  from strategy import StateMarket as state
+  from trade import Trading as trading
+  from api import API_KEY as key
+  from bot import slackBot as bot
+  ```
 > 2. About Slack Bot  
-> 가나다
-* 리스트1
-* 리스트2
-1. 순서
-2. 순서  
-*가나다*
-**가나다**
+
