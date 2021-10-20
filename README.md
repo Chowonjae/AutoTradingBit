@@ -54,9 +54,9 @@
     noise = noise_total / 20
     return truncate(noise, 2)
   ```
-* How it works
+* How it works  
   -main.py에 각각의 모듈들을 import 하고 모든 동작은 main.py에서 시작 되게 했다.
-  ```
+```
   import time
   import datetime
   import pyupbit as pu
@@ -65,6 +65,6 @@
   from trade import Trading as trading
   from api import API_KEY as key
   from bot import slackBot as bot
-  ```
+```
 > 2. About Slack Bot  
 
