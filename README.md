@@ -70,4 +70,61 @@
 ```
 > 2. About Slack Bot  
  * In main.py
-  -거래를 하면서 
+  -거래를 하면서 발생하는 모든 Log들을 Slack API를 사용하여 Slack으로 받아 볼 수 있도록 했다.  
+  -slackBot.py  
+ * Commander Bot  
+  -slackToUser.py에서 챗봇 형태로 사용자가 Slack에서 값들을 입력하면 find_info.py에서 해당 값을 찾아서 반환하도록 했다.  
+  -거래중인 화폐 보기  
+```
+def get_balances():
+    text = ''
+    data = upbit.get_balances()
+    for i in data:
+        text += i['currency'] + ' : ' + str(format(float(i['balance']), ',')) + '\n'
+    return text
+```
+  -손익 확인하기 (%)  
+```
+def profit_and_loss():
+    text = ''
+    current_price = {}
+    data = upbit.get_balances()
+    for i in data:
+        if i['currency'] == 'KRW':
+            pass
+        else:
+            current_price[i['currency']] = round(
+                ((pu.get_current_price() - float(i['avg_buy_price'])) / float(i['avg_buy_price'])) * 100, 2)
+    for i in current_price:
+        text += i + ' : ' + str(current_price[i]) + ' %' + '\n'
+    return text
+```
+*** 
+                                               우분투 조작
+***
+  -프로그램 작동 여부  
+```
+def state():
+    pids = str(sp.check_output("ps -ef | grep main.py | awk '{print $2}'", shell=True))
+    pid = pids.replace('b', '').replace("'", "").split('\\n')[0]
+    if pid == 0 or pid is None:
+        return '실행중이 아닙니다.'
+    else:
+        return '실행중 입니다.'
+```
+  -도커에 들어가서 따로 실행하지 않고 Slack으로 동작 정지를 할 수 있게 만들었다.  
+  -프로그램 시작  
+```
+def start():
+    os.chdir(path_ubuntu)
+    os.system('nohup python3 main.py 1>output.log 2>error.log &')
+    return 'main.py를 실행'
+```
+  -프로그램 정지  
+```
+def stop():
+    pids = str(sp.check_output("ps -ef | grep main.py | awk '{print $2}'", shell=True))
+    pid = pids.replace('b', '').replace("'", "").split('\\n')[0]
+    os.system('kill -9 ' + pid)
+    return pid + ' 정지 완료'
+```
