@@ -1,8 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from api import API_KEY as key
-from bot import slackBot as bot
-import datetime
+# from bot import slackBot as bot
 import pyupbit as pu
 
 upbit = key.api_key()
@@ -24,6 +23,7 @@ def sell_crypto_currency(ticker):
     # orderbook = pu.get_orderbook(ticker)
     # buy_price = orderbook[0]['orderbook_units'][0]['ask_price']
     upbit.sell_market_order(ticker, coin)
+    bot.sell_bot(ticker)
 
 
 # 취소
@@ -83,4 +83,5 @@ def order_history2(coin):
 #                 current_price < float(state_done[i]['price'] * 0.1)
 #                 return True
 
-# print(order_history1("KRW-TRX"))
+if __name__ == '__main__':
+    order_history1('KRW_BTC')

@@ -45,12 +45,12 @@ def get_ror(coin, k):
 
     df['hpr'] = df['ror'].cumprod()
     df['dd'] = (df['hpr'].cummax() - df['hpr']) / df['hpr'].cummax() * 100
-    print("MDD: ", df['dd'].max())
-    print("HPR: ", df['hpr'][-2])
-    df.to_excel("larry_ma.xlsx")
+    # print("MDD: ", df['dd'].max())
+    # print("HPR: ", df['hpr'][-2])
+    # df.to_excel("larry_ma.xlsx")
 
     plt.plot(df['total'])
-    plt.show()
+    # plt.show()
     df.to_excel("BackTesting.xlsx")
 
     ror = df['ror'].cumprod()[-2]
@@ -61,7 +61,7 @@ def get_ror(coin, k):
 # print(get_ror("KRW-BTC", 0.4))
 for k in np.arange(0.1, 1.0, 0.1):
     ror = get_ror("KRW-BTC", k)
-    print("%.1f %f" % (k, ror))
+    # print("%.1f %f" % (k, ror))
 
 # def get_ror(k):
 #     date = None
