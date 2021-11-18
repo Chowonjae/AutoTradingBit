@@ -75,7 +75,23 @@
   -거래를 하면서 발생하는 모든 Log들을 Slack API를 사용하여 Slack으로 받아 볼 수 있도록 했다.  
   -slackBot.py  
  * Commander Bot  
-  -slackToUser.py에서 챗봇 형태로 사용자가 Slack에서 값들을 입력하면 find_info.py에서 해당 값을 찾아서 반환하도록 했다.  
+  -slackToUser.py에서 Flask를 사용하여 챗봇(Rest API POST, GET를 사용하여) 형태로 사용자가 Slack에서 값들을 입력(POST)하면 find_info.py에서 해당 값을 찾아서 반환하도록 했다.
+  -구현부
+```
+@app.route("/slack", methods=["GET", "POST"])
+def hears():
+    slack_event = json.loads(request.data)
+    if "challenge" in slack_event:
+        return make_response(slack_event["challenge"], 200,
+                             {"content_type": "application/json"})
+    if "event" in slack_event:
+        event_type = slack_event["event"]["type"]
+        event_command = slack_event["event"]["text"]
+        command = command_list(event_command)
+        return event_handler(event_type, slack_event, command)
+    return make_response("슬랙 요청에 이벤트가 없습니다.", 404,
+                         {"X-Slack_No_Retry": 1})
+```
   -거래중인 화폐 보기  
 ```
 def get_balances():
