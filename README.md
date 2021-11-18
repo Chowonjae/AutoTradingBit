@@ -148,5 +148,9 @@ def stop():
     return pid + ' 정지 완료'
 ```
 > 3. About Working environment
-  * AWS
-   -
+  * AWS  
+   -AWS EC2 Ubuntu 20.04 환경에서 nohup으로 백그라운드에서 실행 시켰다.  
+  * Docker  
+   -Docker Ubuntu 20.04 환경으로 이식 완료  
+   -main.py를 nohup으로 백그라운드 실행 후 별도로 slackToUser.py를 실행시켜 API로 명령어를 주고 받음
+   -터널링을 통하여 통신
